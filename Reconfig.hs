@@ -1,4 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
+module Reconfig where
+
 import Data.Yaml
 import Data.Text (Text, unpack)
 import Filesystem.Path.CurrentOS
@@ -13,7 +15,6 @@ import Control.Monad (mzero, foldM)
 import qualified Data.Map as Map
 import Data.Maybe (catMaybes)
 import System.Cmd (rawSystem)
-import System.Environment (getArgs)
 import qualified Prelude
 
 data Deploy = Deploy
@@ -148,19 +149,14 @@ nginxBlockStatic s = unlines
     , "}"
     ]
 
-main :: IO ()
-main = do
-    args <- getArgs
-    (rootDir, unpackedFolder, angelConfig, nginxConfig) <-
-        case args of
-            [a, b, c, d] -> return (a, b, c, d)
-            _ -> error "Invalid arguments"
-    let unpacker = unlines
-            [ "unpacker {"
+reconfig :: String -> String -> String -> String -> IO ()
+reconfig rootDir unpackedFolder angelConfig nginxConfig = do
+    let deploy = unlines
+            [ "deploy {"
             , concat
                 [ "    exec = \""
                 , rootDir
-                , "bin/unpacker "
+                , "bin/deploy "
                 , rootDir
                 , "\""
                 ]
@@ -171,7 +167,7 @@ main = do
     let statics = concatMap deployStatics $ Map.elems deploys
     let rootDir' = decodeString rootDir
     writeFile rootDir' angelConfig
-        $ unpacker ++ concatMap angelBlock was
+        $ deploy ++ concatMap angelBlock was
     writeFile rootDir' nginxConfig
         $ concatMap nginxBlockWebapp was ++
           concatMap nginxBlockStatic statics

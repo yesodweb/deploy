@@ -1,13 +1,13 @@
 #!/bin/bash -ex
 
 mkdir -p /yesod-deploy/{bin,etc,incoming,unpacked}
-cp angel reconfig unpacker /yesod-deploy/bin
+cp angel deploy /yesod-deploy/bin
 
 apt-get install nginx
 
 cat > /yesod-deploy/etc/angel.conf <<EOF
 unpacker {
-    exec = "/yesod-deploy/bin/unpacker /yesod-deploy/"
+    exec = "/yesod-deploy/bin/deploy /yesod-deploy/"
 }
 EOF
 

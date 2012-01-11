@@ -10,6 +10,7 @@ import Filesystem.Path.CurrentOS
 import Filesystem
 import System.IO.Error (isAlreadyExistsError)
 import System.Cmd (rawSystem)
+import Reconfig
 
 main :: IO ()
 main = do
@@ -30,13 +31,11 @@ unpack dir = do
     dest <- getDest [1..]
     let incoming = dir </> "incoming"
     listDirectory incoming >>= mapM_ (unpack1 dest)
-    _ <- rawSystem (encodeString $ dir </> "bin" </> "reconfig")
-        [ encodeString dir
-        , encodeString dest
-        , encodeString $ dir </> "etc" </> "angel.conf"
-        , "/etc/nginx/sites-enabled/yesod-deploy.conf"
-        ]
-    return ()
+    reconfig
+        (encodeString dir)
+        (encodeString dest)
+        (encodeString $ dir </> "etc" </> "angel.conf")
+        ("/etc/nginx/sites-enabled/yesod-deploy.conf")
   where
     getDest :: [Int] -> IO FilePath
     getDest [] = error "getDest:impossible happened"
