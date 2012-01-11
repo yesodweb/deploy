@@ -1,0 +1,7 @@
+name: testapp1
+webapps:
+- host: testapp2
+  exec: testapp1
+statics:
+- host: static.testapp1
+  directory: static

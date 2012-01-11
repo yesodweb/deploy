@@ -1,0 +1,8 @@
+*.swp
+angel
+reconfig
+unpacker
+*.hi
+*.o
+testapp1.yesod
+testapp1/testapp1
