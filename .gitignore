@@ -1,8 +1,8 @@
 *.swp
 angel
-reconfig
-unpacker
-*.hi
-*.o
+deploy
 testapp1.yesod
 testapp1/testapp1
+/dist/
+testapp1/*.hi
+testapp1/*.o

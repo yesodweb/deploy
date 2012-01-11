@@ -1,0 +1,37 @@
+Name:                yesod-deploy
+Version:             0.0.0
+Synopsis:            Automated single-file deployments of Yesod apps.
+Description:         Automated single-file deployments of Yesod apps.
+Homepage:            http://www.yesodweb.com/
+License:             BSD3
+License-file:        LICENSE
+Author:              Michael Snoyman
+Maintainer:          michael@snoyman.com
+Category:            Web
+Build-type:          Simple
+Extra-source-files:  setup.sh
+Cabal-version:       >=1.8
+
+Executable deploy
+  hs-source-dirs:      src
+  Main-is:             deploy.hs
+  Build-depends:       base              >= 4       && < 5
+                     , process
+                     , containers
+                     , text
+                     , bytestring
+                     , system-fileio     >= 0.3.3   && < 0.4
+                     , system-filepath   >= 0.4.4   && < 0.5
+                     , yaml              >= 0.5.1.1 && < 0.6
+                     , hinotify          >= 0.3.2   && < 0.4
+  Other-modules:       Config
+                       Angel
+                       Nginx
+                       Reload
+                       Unpack
+                       Paths
+  ghc-options:         -Wall -Werror
+
+source-repository head
+  type:     git
+  location: git://github.com/yesodweb/yesod-deploy.git
