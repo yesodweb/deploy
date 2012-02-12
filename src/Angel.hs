@@ -11,6 +11,7 @@ import Data.Text.Lazy.Builder.Int (decimal)
 import Filesystem.Path.CurrentOS (encodeString)
 import qualified Data.Map as Map
 import Data.Text (Text, pack, unpack)
+import qualified Data.Text as T
 import qualified Data.Text.Lazy as TL
 import Control.Monad.Trans.State (StateT, runStateT, get, put)
 import Control.Monad.IO.Class (liftIO)
@@ -21,6 +22,7 @@ import Config
 import Paths
 import Filesystem (isFile)
 import System.Process (readProcess)
+import Data.Char (isAlphaNum)
 
 infixr 5 <>
 (<>) :: Monoid m => m -> m -> m
@@ -29,11 +31,14 @@ infixr 5 <>
 -- | A block in an angel file for an individual webapp.
 angelBlock :: WebappFinal -> Builder
 angelBlock (WebappFinal w d p mpost) =
-    fromText (deployName d) <> "-" <> fromText (webappHost w) <> " {\n" <>
-    "    exec = \"env PORT=" <> decimal p <> " " <> postgresEnv <> fromString (encodeString $ webappExec w) <> "\"\n" <>
+    fromText (deployName d) <> "-" <> fromText (T.map safeChar $ webappHost w) <> " {\n" <>
+    "    exec = \"env PORT=" <> decimal p <> " " <> postgresEnv <> fromString (encodeString $ webappExec w) <> " production\"\n" <>
     "    directory = \"" <> fromString (encodeString $ deployDirectory d) <> "\"\n" <>
     "}\n\n"
   where
+    safeChar c
+        | isAlphaNum c = c
+        | otherwise = '_'
     postgresEnv =
         case mpost of
             Nothing -> ""

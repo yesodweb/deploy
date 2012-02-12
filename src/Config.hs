@@ -52,9 +52,9 @@ instance FromJSON Deploy where
     parseJSON (Object o) = Deploy
         <$> o .: "name"
         <*> return ""
-        <*> o .: "webapps"
-        <*> o .: "statics"
-        <*> o .: "postgresql"
+        <*> o .:? "webapps"    .!= []
+        <*> o .:? "statics"    .!= []
+        <*> o .:? "postgresql" .!= False
     parseJSON _ = mzero
 
 instance FromJSON Webapp where
