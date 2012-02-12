@@ -5,3 +5,4 @@ webapps:
 statics:
 - host: static.testapp1
   directory: static
+postgresql: true

@@ -24,6 +24,8 @@ Executable deploy
                      , system-filepath   >= 0.4.4   && < 0.5
                      , yaml              >= 0.5.1.1 && < 0.6
                      , hinotify          >= 0.3.2   && < 0.4
+                     , transformers      >= 0.2.2   && < 0.3
+                     , random
   Other-modules:       Config
                        Angel
                        Nginx

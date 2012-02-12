@@ -5,6 +5,7 @@ module Paths
     , incoming
     , angelConf
     , nginxConf
+    , postgresConf
     ) where
 
 import Prelude ()
@@ -20,3 +21,6 @@ angelConf r = r </> "etc" </> "angel.conf"
 
 nginxConf :: FilePath
 nginxConf = "/etc/nginx/sites-enabled/yesod-deploy.conf"
+
+postgresConf :: RootDir -> FilePath
+postgresConf r = r </> "etc" </> "postgres.yaml"

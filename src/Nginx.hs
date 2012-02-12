@@ -16,8 +16,8 @@ infixr 5 <>
 (<>) :: Monoid m => m -> m -> m
 (<>) = mappend
 
-nginxBlockWebapp :: WebappPort -> Builder
-nginxBlockWebapp (WebappPort w _ p) =
+nginxBlockWebapp :: WebappFinal -> Builder
+nginxBlockWebapp (WebappFinal w _ p _) =
     "server {\n" <>
     "    server_name " <> fromText (webappHost w) <> ";\n" <>
     "    location / {\n" <>
@@ -33,5 +33,5 @@ nginxBlockStatic s =
     "}\n\n"
 
 nginxFile :: Deploys -> Builder
-nginxFile ds = mconcat (map nginxBlockWebapp $ webappPorts ds) <>
+nginxFile ds = mconcat (map nginxBlockWebapp $ webappFinals ds) <>
                mconcat (map nginxBlockStatic $ concatMap deployStatics $ Map.elems ds)

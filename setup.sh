@@ -3,7 +3,7 @@
 mkdir -p /yesod-deploy/{bin,etc,incoming,unpacked}
 cp angel deploy /yesod-deploy/bin
 
-apt-get install nginx
+apt-get install nginx postgresql
 
 cat > /yesod-deploy/etc/angel.conf <<EOF
 unpacker {

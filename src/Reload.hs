@@ -22,7 +22,7 @@ import Paths
 reload :: RootDir -> FilePath -> IO ()
 reload rootDir unpackedFolder = do
     deploys <- loadDeploys unpackedFolder
-    writeFile rootDir (angelConf rootDir) $ angelFile rootDir deploys
+    angelFile rootDir deploys >>= writeFile rootDir (angelConf rootDir)
     writeFile rootDir nginxConf $ nginxFile deploys
     _ <- rawSystem "reload" ["yesod-deploy-angel"]
     _ <- rawSystem "/etc/init.d/nginx" ["reload"]
